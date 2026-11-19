@@ -1,28 +1,24 @@
 {
-  "name": "kaizora-digital-vite",
+  "name": "kaizora-digital",
   "version": "1.0.0",
   "private": true,
-  "type": "module",
   "scripts": {
-    "dev": "vite",
-    "build": "tsc --noEmit && vite build",
-    "preview": "vite preview",
-    "typecheck": "tsc --noEmit"
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint"
   },
   "dependencies": {
-    "@fortawesome/fontawesome-free": "^6.5.1",
-    "react": "19.3.1",
-    "react-dom": "19.3.1",
-    "react-router-dom": "^7.5.0"
+    "next": "15.5.7",
+    "react": "19.1.0",
+    "react-dom": "19.1.0"
   },
   "devDependencies": {
-    "@tailwindcss/postcss": "4.3.5",
-    "@types/node": "26.6.6",
-    "@types/react": "19.3.0",
-    "@types/react-dom": "19.3.0",
-    "@vitejs/plugin-react": "^4.4.1",
-    "tailwindcss": "4.3.5",
-    "typescript": "5.9.3",
-    "vite": "^6.3.1"
+    "@tailwindcss/postcss": "4.1.11",
+    "@types/node": "22.15.30",
+    "@types/react": "19.1.8",
+    "@types/react-dom": "19.1.6",
+    "tailwindcss": "4.1.11",
+    "typescript": "5.8.3"
   }
 }
