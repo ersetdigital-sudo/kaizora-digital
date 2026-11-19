@@ -65,16 +65,13 @@ function ResultView({ tx, onOrder }: { tx: Tx; onOrder: (kind: "game" | "ppob", 
 }
 
 export default function Tracker() {
-  const { openOrder, confirmInfo, toast } = useUI();
+  const { openOrder } = useUI();
   const searchParams = useSearchParams();
   const [input, setInput] = useState("");
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
   const [result, setResult] = useState<Tx | null>(null);
   const [missing, setMissing] = useState<string | null>(null);
-  const [history, setHistory] = useState<Tx[]>([]);
-
-  const refreshHistory = useCallback(() => setHistory(TxStore.local().slice(0, 5)), []);
 
   const lookup = useCallback(async (raw: string, opts?: { scroll?: boolean }) => {
     const idVal = String(raw || "").trim().toUpperCase();
@@ -89,8 +86,8 @@ export default function Tracker() {
     } finally { setLoading(false); }
   }, []);
 
-  useEffect(() => { refreshHistory(); TxStore.settle(); }, [refreshHistory]);
-  useEffect(() => onTxChange(() => { refreshHistory(); setResult((cur) => (cur ? TxStore.find(cur.id) ?? cur : cur)); }), [refreshHistory]);
+  useEffect(() => { TxStore.settle(); }, []);
+  useEffect(() => onTxChange(() => { setResult((cur) => (cur ? TxStore.find(cur.id) ?? cur : cur)); }), []);
 
   useEffect(() => {
     const q = searchParams.get("inv");
@@ -119,27 +116,6 @@ export default function Tracker() {
                 <Icon name="fa-magnifying-glass" /> Cek Status
               </button>
             </form>
-            {history.length > 0 && (
-              <div className="history" id="historyBox">
-                <div className="history__head">
-                  <b>Transaksi saya (di perangkat ini)</b>
-                  <button type="button" id="historyClear" onClick={() => confirmInfo({
-                    title: "Hapus riwayat?", text: "Semua riwayat transaksi di perangkat ini akan dihapus.", label: "Ya, hapus",
-                    onConfirm: () => { TxStore.clear(); setHistory([]); setResult(null); toast({ msg: "Riwayat transaksi dihapus.", type: "info" }); },
-                  })}>Hapus</button>
-                </div>
-                <ul id="historyList">
-                  {history.map((t) => (
-                    <li key={t.id}>
-                      <button type="button" onClick={() => lookup(t.id)}>
-                        <span><b>{t.id}</b><small>{t.productLabel} · {idr(t.total)}</small></span>
-                        <span className={`status status--${t.status}`}>{STATUS[t.status].label}</span>
-                      </button>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            )}
           </div>
           <div className="card result" id="trackResult" data-reveal aria-live="polite">
             {loading ? (<>

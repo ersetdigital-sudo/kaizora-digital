@@ -54,19 +54,21 @@ export function onTxChange(cb: (id: string | null) => void) {
 }
 const emit = (id: string | null) => listeners.forEach((cb) => cb(id));
 
+let txMemory: Tx[] = [];
+
 export const TxStore = {
   local(): Tx[] {
-    return Store.get<Tx[]>(siteConfig.storageKeys.tx, []);
+    return txMemory;
   },
   localCount(): number {
-    return TxStore.local().length;
+    return txMemory.length;
   },
   all(): Tx[] {
-    return TxStore.local();
+    return txMemory;
   },
   find(id: string | null | undefined): Tx | null {
     const key = String(id ?? "").trim().toUpperCase();
-    return TxStore.all().find((t) => t.id === key) ?? null;
+    return txMemory.find((t) => t.id === key) ?? null;
   },
   create(payload: OrderPayload): Tx {
     const now = Date.now();
@@ -77,30 +79,25 @@ export const TxStore = {
       status: "pending",
       history: [{ status: "pending", at: now, note: "Invoice dibuat. Menunggu pembayaran." }],
     };
-    const list = TxStore.local();
-    list.unshift(tx);
-    Store.set(siteConfig.storageKeys.tx, list.slice(0, 30));
+    txMemory = [tx, ...txMemory].slice(0, 30);
     emit(tx.id);
     return tx;
   },
   setStatus(id: string, status: TxStatus, note: string): Tx | null {
-    const list = TxStore.local();
-    const tx = list.find((t) => t.id === id);
+    const tx = txMemory.find((t) => t.id === id);
     if (!tx) return null;
     tx.status = status;
     tx.history.push({ status, at: Date.now(), note });
-    Store.set(siteConfig.storageKeys.tx, list);
     emit(id);
     return tx;
   },
   clear() {
-    Store.set(siteConfig.storageKeys.tx, []);
+    txMemory = [];
     emit(null);
   },
   settle() {
-    const list = TxStore.local();
     let changed = false;
-    list.forEach((t) => {
+    txMemory.forEach((t) => {
       const last = t.history[t.history.length - 1];
       if (t.status === "processing" && last && Date.now() - last.at > 3500) {
         t.status = "success";
@@ -108,7 +105,7 @@ export const TxStore = {
         changed = true;
       }
     });
-    if (changed) Store.set(siteConfig.storageKeys.tx, list);
+    if (changed) emit(null);
   },
 };
 
