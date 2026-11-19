@@ -126,10 +126,9 @@ export default function InvoiceModal({ id, onClose }: { id: string | null; onClo
               <img
                 src={siteConfig.payment.qrisImage}
                 width={220}
-                height={220}
                 alt="Kode QRIS"
                 loading="eager"
-                style={{ display: "block", borderRadius: 10 }}
+                style={{ display: "block", width: 220, maxWidth: "100%", height: "auto", borderRadius: 10 }}
               />
             </div>
 

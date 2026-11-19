@@ -11,7 +11,7 @@ export const siteConfig = {
     user: "kaizora.user.v1",
   },
   payment: {
-    qrisImage: "/assets/images/payments/Qris.jpeg",
+    qrisImage: "/assets/images/payments/qris-baru.png",
     qrisTimerSeconds: 15 * 60,
   },
   contact: {
