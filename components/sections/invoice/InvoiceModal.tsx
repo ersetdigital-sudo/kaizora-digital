@@ -101,28 +101,55 @@ export default function InvoiceModal({ id, onClose }: { id: string | null; onClo
       </p>
 
       {tx.status === "pending" && isQris && (
-        <div className="pay-guide" style={{ flexDirection: "column", alignItems: "stretch", gap: 12 }}>
-          <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", gap: 8, flexWrap: "wrap" }}>
-            <b><Icon name="fa-qrcode" /> Pembayaran QRIS</b>
+        <div style={{ border: "1px solid var(--line)", borderRadius: 16, overflow: "hidden", background: "#fff", marginBottom: 16 }}>
+          <div style={{ background: "var(--ink-900)", color: "#fff", padding: "14px 16px", display: "flex", alignItems: "center", justifyContent: "space-between", gap: 12, flexWrap: "wrap" }}>
+            <div style={{ display: "flex", alignItems: "center", gap: 10, fontWeight: 700 }}>
+              <span style={{ width: 34, height: 34, borderRadius: 10, background: "rgba(255,255,255,0.12)", display: "grid", placeItems: "center" }}>
+                <Icon name="fa-qrcode" />
+              </span>
+              <span>Pembayaran QRIS</span>
+            </div>
+            <span style={{ display: "inline-flex", alignItems: "center", gap: 6, fontSize: 13, fontWeight: 600, padding: "6px 10px", borderRadius: 999, background: "rgba(255,255,255,0.14)" }}>
+              <Icon name={s.icon} /> {s.label}
+            </span>
           </div>
-          <div className="notice" style={{ margin: 0 }}>
-            <Icon name="fa-triangle-exclamation" />
-            <span>Website demo portofolio, bukan transaksi sungguhan. Jangan lakukan pembayaran.</span>
+
+          <div style={{ padding: 20, display: "grid", gap: 16, justifyItems: "center" }}>
+            <div style={{ textAlign: "center" }}>
+              <div style={{ fontSize: 13, color: "var(--muted)", marginBottom: 4 }}>Total Pembayaran</div>
+              <div style={{ fontFamily: "var(--font-display)", fontSize: 30, fontWeight: 800, color: "var(--ink-900)", lineHeight: 1.1 }}>
+                {idr(tx.total)}
+              </div>
+            </div>
+
+            <div style={{ background: "#fff", padding: 14, borderRadius: 16, border: "1px solid var(--line)", boxShadow: "var(--shadow-sm)" }}>
+              <img
+                src={siteConfig.payment.qrisImage}
+                width={220}
+                height={220}
+                alt="Kode QRIS"
+                loading="eager"
+                style={{ display: "block", borderRadius: 10 }}
+              />
+            </div>
+
+            <div style={{ width: "100%", display: "grid", gridTemplateColumns: "1fr 1fr", gap: 10 }}>
+              <div style={{ background: "var(--surface)", border: "1px solid var(--line)", borderRadius: 12, padding: "12px 10px", textAlign: "center" }}>
+                <div style={{ fontSize: 12, color: "var(--muted)", marginBottom: 2 }}>Sisa Waktu</div>
+                <div style={{ fontWeight: 800, fontSize: 18, color: remaining > 0 ? "var(--ink-900)" : "var(--danger)", fontVariantNumeric: "tabular-nums" }}>
+                  {remaining > 0 ? fmtCountdown(remaining) : "Habis"}
+                </div>
+              </div>
+              <div style={{ background: "var(--surface)", border: "1px solid var(--line)", borderRadius: 12, padding: "12px 10px", textAlign: "center" }}>
+                <div style={{ fontSize: 12, color: "var(--muted)", marginBottom: 2 }}>Status</div>
+                <div style={{ fontWeight: 700, fontSize: 15, color: "var(--ink-900)" }}>{s.label}</div>
+              </div>
+            </div>
+
+            <p style={{ margin: 0, fontSize: 13, color: "var(--muted)", textAlign: "center" }}>
+              Scan kode QRIS menggunakan aplikasi pembayaran Anda.
+            </p>
           </div>
-          <div style={{ display: "grid", placeItems: "center", padding: 8, background: "#fff", borderRadius: 12 }}>
-            <img
-              src={siteConfig.payment.qrisImage}
-              width={200}
-              height={200}
-              alt="Kode QRIS"
-              loading="eager"
-            />
-          </div>
-          <dl className="kv" style={{ margin: 0 }}>
-            <div><dt>Nominal</dt><dd>{idr(tx.total)}</dd></div>
-            <div><dt>Sisa waktu</dt><dd>{remaining > 0 ? fmtCountdown(remaining) : "Waktu habis"}</dd></div>
-            <div><dt>Status</dt><dd>{s.label}</dd></div>
-          </dl>
         </div>
       )}
 
