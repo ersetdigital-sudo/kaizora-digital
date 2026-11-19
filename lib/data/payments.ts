@@ -1,7 +1,7 @@
 import type { Payment } from "@/types";
 
 export const PAYMENTS: Payment[] = [
-  { id: "qris", name: "QRIS", desc: "Semua e-wallet & mobile banking", code: "QR", color: "#14241d", fee: { type: "percent", value: 0.7 } },
+  { id: "qris", name: "QRIS", desc: "Semua e-wallet & mobile banking", code: "QR", color: "#14241d", fee: { type: "flat", value: 0 } },
   { id: "dana", name: "DANA", desc: "Bayar lewat aplikasi DANA", code: "DANA", color: "#118eea", fee: { type: "percent", value: 1 } },
   { id: "ovo", name: "OVO", desc: "Bayar lewat aplikasi OVO", code: "OVO", color: "#4c2a86", fee: { type: "percent", value: 1.5 } },
   { id: "gopay", name: "GoPay", desc: "Bayar lewat aplikasi Gojek", code: "GP", color: "#00a05a", fee: { type: "percent", value: 1 } },
@@ -15,6 +15,7 @@ export function getPayment(id: string | null | undefined): Payment | null {
 }
 
 export function feeText(pay: { fee: Payment["fee"] }) {
+  if (pay.fee.value === 0) return "Tanpa biaya";
   if (pay.fee.type === "percent") return `Biaya ${String(pay.fee.value).replace(".", ",")}%`;
   return `Biaya Rp${Math.abs(Math.round(pay.fee.value)).toLocaleString("id-ID")}`;
 }
