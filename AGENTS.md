@@ -8,7 +8,7 @@
 
 ## 4. Optimasi (hemat bandwidth Vercel dan ringan)
 - Tanpa ISR, tanpa `revalidate`, tanpa middleware, tanpa route handler, tanpa API route.
-- Gambar: optimasi sendiri ke WebP/AVIF dengan ukuran sesuai tampilan (kecuali QR), simpan di `public/`. Set `images.unoptimized: true`. Logo dan ikon pakai SVG. Gambar di bawah fold lazy load, hero pakai prioritas tinggi (`priority`/eager bila perlu).
+- Gambar: optimasi sendiri ke WebP/AVIF dengan ukuran sesuai tampilan (kecuali QR), simpan di `public/`. Set `images.unoptimized: true`. File QR disimpan di `public/` dalam format aslinya (PNG/JPEG/SVG), tidak dikonversi ke WebP/AVIF dan tidak dikompres lossy; nama file diatur lewat config dan dimuat saat modal pembayaran dibuka. Logo dan ikon pakai SVG. Gambar di bawah fold lazy load, hero pakai prioritas tinggi (`priority`/eager bila perlu).
 - Font Awesome webfont dibuang. Ganti ke SVG inline atau ikon per-item (hanya yang dipakai). Font teks lewat `next/font` (subset latin, maksimal 2 family).
 - JS sekecil mungkin: modal (Order, Invoice, Auth, Pembayaran) dan komponen berat pakai dynamic import. Animasi pakai CSS. Hindari library besar.
 - Link di daftar panjang (katalog game, grid PPOB) pakai `prefetch={false}`.

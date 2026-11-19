@@ -104,17 +104,25 @@ export default function InvoiceModal({ id, onClose }: { id: string | null; onClo
         <div className="pay-guide" style={{ flexDirection: "column", alignItems: "stretch", gap: 12 }}>
           <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", gap: 8, flexWrap: "wrap" }}>
             <b><Icon name="fa-qrcode" /> Pembayaran QRIS</b>
-            <span className="badge">Demo</span>
+          </div>
+          <div className="notice" style={{ margin: 0 }}>
+            <Icon name="fa-triangle-exclamation" />
+            <span>Website demo portofolio, bukan transaksi sungguhan. Jangan lakukan pembayaran.</span>
           </div>
           <div style={{ display: "grid", placeItems: "center", padding: 8, background: "#fff", borderRadius: 12 }}>
-            <img src={siteConfig.payment.qrisDemoImage} width={200} height={200} alt="Contoh QRIS (Demo)" loading="eager" style={{ imageRendering: "pixelated" }} />
+            <img
+              src={siteConfig.payment.qrisImage}
+              width={200}
+              height={200}
+              alt="Kode QRIS"
+              loading="eager"
+            />
           </div>
           <dl className="kv" style={{ margin: 0 }}>
             <div><dt>Nominal</dt><dd>{idr(tx.total)}</dd></div>
             <div><dt>Sisa waktu</dt><dd>{remaining > 0 ? fmtCountdown(remaining) : "Waktu habis"}</dd></div>
             <div><dt>Status</dt><dd>{s.label}</dd></div>
           </dl>
-          <p style={{ fontSize: 12, color: "var(--muted)" }}>QR ini hanya contoh demo portofolio, bukan QRIS merchant asli.</p>
         </div>
       )}
 
